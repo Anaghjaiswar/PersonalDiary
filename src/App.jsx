@@ -1,13 +1,11 @@
 import React from 'react'
 import {Routes, Route} from 'react-router-dom';
 
-import SignIn from './_Auth/forms/signIn';
-import SignUp from './_Auth/forms/signUp';
-import AuthLayout from './_Auth/authLayout';
+import SignIn from './_Auth/forms/SignIn';
+import SignUp from './_Auth/forms/SignUp';
+import AuthLayout from './_Auth/AuthLayout';
 import RootLayout from './_root/RootLayout';
-// import {Home, page} from '@/_root/Pages';
-import Home from './_root/Pages/Home';
-import page from './_root/Pages/page';
+import {Home, Page} from './_root/Pages';
 
 const App = () => {
   return (
@@ -15,15 +13,14 @@ const App = () => {
       <Routes>
         {/* public routes */}
         <Route element={<AuthLayout />}>
-          <Route path="/signIn" element={SignIn}></Route>
-          <Route path="/signUp" element={SignUp}></Route>
+          <Route index element={<SignIn/>}></Route>
+          <Route path="/signUp" element={<SignUp/>}></Route>
         </Route>
       
-
         {/* private routes */}
         <Route element={<RootLayout/>}>
-          <Route index element={Home}></Route>
-          <Route path="/page" element={page}></Route>
+          <Route path="/Home" element={<Home/>}></Route>
+          <Route path="/page" element={<Page/>}></Route>
         </Route>
       </Routes>
     </main>

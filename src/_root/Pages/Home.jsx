@@ -236,10 +236,6 @@ function Home() {
   return (
     <DndProvider backend={HTML5Backend}>
     <div className="flex flex-col items-center bg-primary p-4">
-      <h1 className="text-base md:text-xl lg:text-2xl  text-center text-secondary mt-4 mb-8">
-        <span className="font-semibold">Scribbles</span> : Your Personal Diary
-      </h1>
-
       <div className="w-full">
         <div
           className="addBlog flex flex-col justify-center items-center cursor-pointer rounded-xl bg-primary w-full h-36 m-4"

@@ -1,2 +1,2 @@
 export {default as Home} from "./Home";
-export {default as page} from "./page";
+export {default as Page} from "./Page";

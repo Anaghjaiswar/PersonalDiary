@@ -1,16 +1,54 @@
-import React from 'react'
+import React from "react";
 import { Button, Checkbox, Form, Input } from "antd";
-import {Link} from 'react-router-dom';
+import { notification, Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
+import { Link, useNavigate } from "react-router-dom";
+import { useUserContext } from "../../context/AuthContext";
+import { useSignInAccount } from "../../lib/react-query/queriesAndMutation";
 
-const onFinish = (values) => {
-  console.log("Success:", values);
-};
-
-const onFinishFailed = (errorInfo) => {
-  console.log("Failed:", errorInfo);
-};
+const antIcon = (
+  <LoadingOutlined style={{ fontSize: 18, color: "white" }} spin />
+);
 
 const SignIn = () => {
+  const [form] = Form.useForm();
+  const navigate = useNavigate();
+  const { checkAuthUser, isPending: isUserLoading } = useUserContext();
+
+  const openNotificationWithIcon = (type, message = "Sign Up Failed") => {
+    notification[type]({
+      message: message,
+      description: "Try again later",
+    });
+  };
+
+  // Query
+  const { mutateAsync: signInAccount, isPending } = useSignInAccount();
+  const onFinish = async (user) => {
+    const session = await signInAccount(user);
+
+    if (!session) {
+      openNotificationWithIcon("warning", "Please check");
+
+      return;
+    }
+
+    const isLoggedIn = await checkAuthUser();
+
+    if (isLoggedIn) {
+      form.resetFields();
+
+      navigate("/Home");
+    } else {
+      openNotificationWithIcon("error", "Login Failed");
+
+      return;
+    }
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
 
   return (
     <Form
@@ -33,13 +71,11 @@ const SignIn = () => {
       autoComplete="off"
     >
       <Form.Item
-        label={<label style={{ color: "#fff" }}>Username</label>}
-        name="username"
+        label={<label style={{ color: "#fff" }}>Email</label>}
+        name="email"
         rules={[
-          {
-            required: true,
-            message: "Please input your username!",
-          },
+          { required: true, message: "Please input your email!" },
+          { type: "email", message: "Please enter a valid email address" },
         ]}
       >
         <Input />
@@ -73,22 +109,31 @@ const SignIn = () => {
         <Button
           type="primary"
           htmlType="submit"
-
           style={{
             width: "100%",
             fontSize: "0.8rem",
             backgroundColor: "#1890ff", // Set the button background color
             borderColor: "#1890ff", // Set the button border color
           }}
-          hover = "true"
+          hover="true"
         >
-          Sign In
+          {isPending || isUserLoading ? (
+            <Spin indicator={antIcon} />
+          ) : (
+            "Sign In"
+          )}
         </Button>
       </Form.Item>
 
-      <p className='text-white text-center font-semibold text-regular'>New here? <Link to = "/signUp" className='underline underline-offset-2 m-1'>Sign up</Link> to get started!</p>
+      <p className="text-white text-center font-semibold text-regular">
+        New here?{" "}
+        <Link to="/signUp" className="underline underline-offset-2 m-1">
+          Sign up
+        </Link>{" "}
+        to get started!
+      </p>
     </Form>
-  )
-}
+  );
+};
 
-export default SignIn
+export default SignIn;

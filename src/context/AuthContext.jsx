@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { getCurrentUser } from "../lib/appwrite/api";
+import { Spin } from "antd";
 import { useNavigate } from "react-router-dom";
 
 export const INITIAL_USER = {
@@ -12,7 +13,7 @@ export const INITIAL_USER = {
 
 const INITIAL_STATE = {
   user: INITIAL_USER,
-  loading: false,
+  isLoading: false,
   isAuthenticated: false,
   setUser: () => {},
   setIsAuthenticated: () => {},
@@ -22,16 +23,16 @@ const INITIAL_STATE = {
 const AuthContext = createContext(INITIAL_STATE);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(INITIAL_USER);
-  const [isLoading, setLoading] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [user, setUser] = useState(INITIAL_USER);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const checkAuthUser = async () => {
-    setLoading(true);
+    setIsLoading(true);
+
     try {
       const currentAccount = await getCurrentUser();
-
       if (currentAccount) {
         setUser({
           id: currentAccount.$id,
@@ -49,33 +50,40 @@ export function AuthProvider({ children }) {
     } catch (error) {
       console.log(error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
-//   useEffect(() => {
-//     const cookieFallback = localStorage.getItem("cookieFallback");
-//     if (
-//       cookieFallback === "[]" 
-//     //   cookieFallback === null ||
-//     //   cookieFallback === undefined
-//     ) {
-//       navigate("/");
-//     }
-
-//     checkAuthUser();
-//   }, []);
+  useEffect(() => {
+    const cookieFallback = localStorage.getItem("cookieFallback");
+    if (
+      cookieFallback === "[]" ||
+      cookieFallback === null ||
+      cookieFallback === undefined
+    ) {
+      navigate("/sign-in");
+    }
+    checkAuthUser();
+  }, []);
 
   const value = {
     user,
-    setUser,
-    isLoading,
     isAuthenticated,
-    setIsAuthenticated,
+    isLoading,
     checkAuthUser,
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {isLoading ? (
+        <div className="flex w-screen h-screen justify-center items-center bg-[#1b1b1b]">
+          <Spin size="large" />
+        </div>
+      ) : (
+        children
+      )}
+    </AuthContext.Provider>
+  );
 }
 
 export const useUserContext = () => useContext(AuthContext);

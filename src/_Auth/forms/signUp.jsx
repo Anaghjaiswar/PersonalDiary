@@ -1,23 +1,37 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Checkbox, Form, Input, notification, Spin } from "antd";
-import { useCreateUserAccount, useSignInAccount } from "../../lib/react-query/queriesAndMutation";
+import { LoadingOutlined } from "@ant-design/icons";
+import {
+  useCreateUserAccount,
+  useSignInAccount,
+} from "../../lib/react-query/queriesAndMutation";
 import { useUserContext } from "../../context/AuthContext";
+
+const antIcon = <LoadingOutlined style={{ fontSize: 18, color: "white" }} spin />;
 
 const SignUp = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const { checkAuthUser, isPending: isUserLoading } = useUserContext();
-  const { mutateAsync: createUserAccount, isPending: isCreatingUser } = useCreateUserAccount();
-  const { mutateAsync: signInAccount, isPending: isSigningInUser } = useSignInAccount();
+  const { mutateAsync: createUserAccount, isPending: isCreatingUser } =
+    useCreateUserAccount();
+  const { mutateAsync: signInAccount, isPending: isSigningInUser } =
+    useSignInAccount();
 
-  const onFinish = async (values) => {
+  const openNotificationWithIcon = (type, message = "Sign Up Failed") => {
+    notification[type]({
+      message: message,
+      description: "Try again later",
+    });
+  };
+
+  const onFinish = async (user) => {
     try {
-      const newUser = await createUserAccount(values);
+      const newUser = await createUserAccount(user);
 
       if (!newUser) {
-        openNotificationWithIcon("error");
-        return;
+        return openNotificationWithIcon("error");
       }
 
       const session = await signInAccount({
@@ -26,7 +40,7 @@ const SignUp = () => {
       });
 
       if (!session) {
-        openNotificationWithIcon("warning", "Please check");
+        openNotificationWithIcon("warning", "Please Login your account!");
         navigate("/");
         return;
       }
@@ -35,9 +49,9 @@ const SignUp = () => {
 
       if (isLoggedIn) {
         form.resetFields();
-        navigate('/home');
+        navigate("/home");
       } else {
-        openNotificationWithIcon("Login failed. Please try again");
+        openNotificationWithIcon("error", "Login failed. Please try again");
         return;
       }
     } catch (error) {
@@ -47,13 +61,6 @@ const SignUp = () => {
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
-  };
-
-  const openNotificationWithIcon = (type, message = "Sign Up Failed") => {
-    notification[type]({
-      message: message,
-      description: "Try again later",
-    });
   };
 
   return (
@@ -115,7 +122,7 @@ const SignUp = () => {
           }}
         >
           {isCreatingUser || isSigningInUser || isUserLoading ? (
-            <Spin />
+            <Spin indicator={antIcon} />
           ) : (
             "Sign Up"
           )}

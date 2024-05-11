@@ -1,24 +1,26 @@
-import React, { useState } from "react";
-import { Button, message } from "antd";
+import { useState } from "react";
+import { message } from "antd";
 import { Modal as AntModal } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 
+import PropTypes from 'prop-types';
+
 const Modal = ({ onClose }) => {
   const [blogContent, setBlogContent] = useState("");
-  const [image, setImage] = useState(null);
-  const [isPrivate, setIsPrivate] = useState(false);
+  // const [image, setImage] = useState(null);
+  // const [isPrivate, setIsPrivate] = useState(false);
 
   const handleContentChange = (e) => {
     setBlogContent(e.target.value);
   };
 
-  const handleImageChange = (e) => {
+  const handleImageChange = () => {
     // Handle image upload
   };  
 
-  const handlePrivacyChange = (e) => {
-    setIsPrivate(e.target.checked);
-  };
+  // const handlePrivacyChange = (e) => {
+  //   setIsPrivate(e.target.checked);
+  // };
 
   const handleCreateBlog = () => {
     if (!blogContent.trim()) {
@@ -77,6 +79,9 @@ const Modal = ({ onClose }) => {
       </div>
     </div>
   );
+};
+Modal.propTypes = {
+  onClose: PropTypes.func.isRequired, 
 };
 
 export default Modal;

@@ -3,7 +3,6 @@ import ReactQuill from "react-quill";
 import { Tooltip } from "@mui/material";
 import "react-quill/dist/quill.snow.css";
 import {
-  AppstoreAddOutlined,
   DeleteOutlined,
   CameraOutlined,
   DragOutlined,
@@ -235,19 +234,8 @@ function Home() {
 
   return (
     <DndProvider backend={HTML5Backend}>
-    <div className="flex flex-col items-center bg-primary p-4">
-      <div className="w-full">
-        <div
-          className="addBlog flex flex-col justify-center items-center cursor-pointer rounded-xl bg-primary w-full h-36 m-4"
-          onClick={addBlog}
-        >
-          <AppstoreAddOutlined style={{ fontSize: "48px", color: "#d8d8d8" }} />
-          <h1 className="text-base text-secondary mt-2">Add your Blog</h1>
-        </div>
-      </div>
-    </div>
 
-    <div className="flex flex-col items-center bg-primary mt-4">
+    <div className="flex flex-col items-center bg-primary">
       <div className="yourBlogs w-full justify-center items-center bg-primary rounded-xl my-4 mx-2">
         <div className="w-full p-4">
           <h1 className="text-lg text-secondary mb-4">Your Blogs</h1>

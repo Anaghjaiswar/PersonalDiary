@@ -49,6 +49,7 @@ export function AuthProvider({ children }) {
       return false;
     } catch (error) {
       console.log(error);
+      return false;
     } finally {
       setIsLoading(false);
     }
@@ -61,14 +62,16 @@ export function AuthProvider({ children }) {
       cookieFallback === null ||
       cookieFallback === undefined
     ) {
-      navigate("/sign-in");
+      navigate("/");
     }
     checkAuthUser();
   }, []);
 
   const value = {
     user,
+    setUser,
     isAuthenticated,
+    setIsAuthenticated,
     isLoading,
     checkAuthUser,
   };

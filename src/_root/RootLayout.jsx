@@ -1,24 +1,28 @@
 import React, { useEffect, useState } from "react";
+import Modal from "./Pages/Modal";
 import { Page, Home } from "./Pages";
 import logo from "/assets/Scribble.png";
 
-import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
-import { Button } from "antd";
+import {
+  AppstoreAddOutlined,
+  UserOutlined,
+  LogoutOutlined,
+} from "@ant-design/icons";
 
 import { useSignOutAccount } from "../lib/react-query/queriesAndMutation";
 import { useNavigate } from "react-router-dom";
 
 const RootLayout = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
   const { mutate: signOut, isSuccess } = useSignOutAccount();
   const [activeTab, setActiveTab] = useState("All Blogs");
 
   useEffect(() => {
-    if (isSuccess){
+    if (isSuccess) {
       console.log("success");
       navigate(0);
     }
-
   }, [isSuccess]);
 
   const tabItems = [
@@ -28,6 +32,14 @@ const RootLayout = () => {
 
   const changeTab = (label) => {
     setActiveTab(label);
+  };
+
+  const handleAddBlog = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
   };
 
   return (
@@ -61,6 +73,13 @@ const RootLayout = () => {
           {tabItems.find((item) => item.label === activeTab)?.content}
         </div>
       </div>
+      <div className="absolute bottom-10 md:bottom-20 md:right-10 right-5">
+        <div className="addBlog z-99 flex justify-center items-center p-7 cursor-pointer rounded-full bg-primary w-24 md:w-24 m-4" onClick={handleAddBlog}>
+          <AppstoreAddOutlined style={{ fontSize: "36px", color: "#d8d8d8" }} />
+        </div>
+      </div>
+
+      {showModal && <Modal onClose={closeModal} />}
     </div>
   );
 };

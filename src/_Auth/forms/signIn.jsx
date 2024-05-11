@@ -38,7 +38,7 @@ const SignIn = () => {
     if (isLoggedIn) {
       form.resetFields();
 
-      navigate("/Home");
+      navigate("/home");
     } else {
       openNotificationWithIcon("error", "Login Failed");
 

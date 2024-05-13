@@ -9,7 +9,7 @@ import { useUserContext } from "../../context/AuthContext";
 
 const antIcon = <LoadingOutlined style={{ fontSize: 18, color: "white" }} spin />;
 
-const SignUp = () => {
+const register = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const { checkAuthUser, isPending: isUserLoading } = useUserContext();
@@ -138,4 +138,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default register;

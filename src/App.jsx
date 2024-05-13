@@ -1,7 +1,7 @@
 import {Routes, Route} from 'react-router-dom';
 
 import Sign from './_Auth/forms/Sign';
-import SignUp from './_Auth/forms/SignUp';
+import Register from './_Auth/forms/register';
 import AuthLayout from './_Auth/AuthLayout';
 import RootLayout from './_root/RootLayout';
 import {Home, Page} from './_root/Pages';
@@ -13,7 +13,7 @@ const App = () => {
         {/* public routes */}
         <Route element={<AuthLayout />}>
           <Route index element={<Sign/>}></Route>
-          <Route path="/signUp" element={<SignUp/>}></Route>
+          <Route path="/register" element={<Register/>}></Route>
         </Route>
       
         {/* private routes */}

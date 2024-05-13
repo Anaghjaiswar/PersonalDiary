@@ -9,7 +9,7 @@ const antIcon = (
   <LoadingOutlined style={{ fontSize: 18, color: "white" }} spin />
 );
 
-const SignIn = () => {
+const Sign = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const { checkAuthUser, isPending: isUserLoading } = useUserContext();
@@ -135,4 +135,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default Sign;

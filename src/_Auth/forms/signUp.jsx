@@ -1,4 +1,3 @@
-import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Checkbox, Form, Input, notification, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";

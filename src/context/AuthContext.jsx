@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { getCurrentUser } from "../lib/appwrite/api";
 import { Spin } from "antd";
 import { useNavigate } from "react-router-dom";

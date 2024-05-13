@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "./Pages/Modal";
 import { Page, Home } from "./Pages";
 import logo from "/assets/Scribble.png";
